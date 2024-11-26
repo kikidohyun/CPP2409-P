@@ -1,35 +1,46 @@
 #include "chess_piece.h"
 
-int Piece::get_x(){
+int Piece::GetX()
+{
     return x;
 }
-int Piece::get_y(){
+int Piece::GetY()
+{
     return y;
 }
-int Piece::get_team_num(){
+int Piece::GetTeamNum()
+{
     return team_num;
 }
-int Piece::get_life(){
+int Piece::GetLife()
+{
     return life;
 }
-string Piece::get_name(){
+string Piece::GetName()
+{
     return name;
 }
-void Piece::set_x(int x){
-    this->x=x;
+void Piece::SetX(int x)
+{
+    this->x = x;
 }
-void Piece::set_y(int y){
-    this->y=y;
+void Piece::SetY(int y)
+{
+    this->y = y;
 }
-void Piece::set_life(int life){
-    this->life=life;
+void Piece::SetLife(int life)
+{
+    this->life = life;
 }
-void Piece::set_team_num(int team_num){
-    this->team_num=team_num;
+void Piece::SetTeamNum(int team_num)
+{
+    this->team_num = team_num;
 }
-void Piece::set_name(string name){
-        this->name=name;
-    }
-void Piece::print_name(){
-        cout<<name;
-    }
+void Piece::SetName(string name)
+{
+    this->name = name;
+}
+void Piece::PrintName()
+{
+    cout << name;
+}
