@@ -9,6 +9,7 @@ private:
     int team_num;
     int life = 1;
     string name;
+    int modify_num=1;
 
 public:
     int chess_num;
@@ -23,4 +24,6 @@ public:
     void SetTeamNum(int life);
     void SetName(string name);
     void PrintName();
+    int GetModify();
+    void SetModify(int modify_num);
 };

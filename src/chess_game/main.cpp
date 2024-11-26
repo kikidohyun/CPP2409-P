@@ -22,6 +22,9 @@ int main()
     int black_life;
 
     Piece chess_piece[2][16];
+    MakePiece(chess_piece);
+    NamingPiece(chess_piece);
+    BoardCopy(chess_piece);
 
     int choice;
     cout << "1.체스 게임\n2.체스 퀴즈 제작\n 입력하시오" << endl;
@@ -29,9 +32,7 @@ int main()
 
     if (choice == 1)
     {
-        MakePiece(chess_piece);
-        NamingPiece(chess_piece);
-        BoardCopy(chess_piece);
+        
         while (1)
         {
             int turn;
@@ -160,6 +161,21 @@ int main()
             k++;
         }
     }
+    else{
+
+        for(int i=0;i<2;i++){
+            for(int j=0;j<16;j++){
+                chess_piece[i][j].SetModify(0);
+            }
+        }
+        while(1){
+            PrintBoard(chess_piece);
+            int num;
+            cout<<"놓고싶은 기물과 팀에 해당하는 번호를 입력하시오"<<endl;
+            cout<<"1.폰 1\n2.룩 1\n3.나이트 1\n4.비숍 1\n5.킹 1\n6.퀸 1\n7.폰 2\n8.룩 2\n9.나이트 2\n10.비숍 2\n11.킹 2\n12.퀸 2\n";
+            cin>>num;
+        }
+    }
     return 0;
 }
 
@@ -179,7 +195,7 @@ void PrintBoard(Piece chess_piece[2][16])
                 {
                     x = chess_piece[q][w].GetX();
                     y = chess_piece[q][w].GetY();
-                    if (x == j && y == i)
+                    if (x == j && y == i&&chess_piece[q][w].GetModify()==1)
                     {
                         chess_piece[q][w].PrintName();
                         found = true;
@@ -289,11 +305,11 @@ void NamingPiece(Piece chess_piece[2][16])
                 }
                 else if (chess_piece[i][j].GetX() == 3)
                 {
-                    chess_piece[i][j].SetName("킹   1");
+                    chess_piece[i][j].SetName("퀸   1");
                 }
                 else
                 {
-                    chess_piece[i][j].SetName("퀸   1");
+                    chess_piece[i][j].SetName("킹   1");
                 }
             }
             else
@@ -316,11 +332,11 @@ void NamingPiece(Piece chess_piece[2][16])
                 }
                 else if (chess_piece[i][j].GetX() == 3)
                 {
-                    chess_piece[i][j].SetName("킹   2");
+                    chess_piece[i][j].SetName("퀸   2");
                 }
                 else
                 {
-                    chess_piece[i][j].SetName("퀸   2");
+                    chess_piece[i][j].SetName("킹   2");
                 }
             }
         }
