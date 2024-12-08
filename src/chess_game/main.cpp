@@ -202,9 +202,13 @@ int main()
                         }
                         else
                         {
-                            cout << chess_piece[i][j].GetName() << "입니다\n 원하는 x좌표 증가량과 y좌표 증가량을 입력하시오(x축은 오른쪽이 +, y축은 아래쪽이 +, 음수를 입력할 때는 x와y띄어쓰기 하지 말것)" << endl;
+                            cout << chess_piece[i][j].GetName() << "입니다\n 원하는 x좌표 증가량과 y좌표 증가량을 입력하시오(x축은 오른쪽이 +, y축은 아래쪽이 + ,만약 다른 말을 입력하고 싶다면 x,y에 -1입력)" << endl;
                             cin >> moving_x >> moving_y;
-
+                            if(moving_x==-1&&moving_y==-1)
+                            {
+                                k++;
+                                break;
+                            }
                             while (1)
                             {
                                 int check = 1;
