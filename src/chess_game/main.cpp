@@ -13,6 +13,8 @@ void NamingPiece(Piece chess_piece[2][16]);
 void Kill(Piece chess_piece[2][16], Piece &piece, int team_num);
 bool BoardCheck(Piece chess_piece[2][16], Piece &piece, int plus_x, int plus_y);
 bool ChessRule(Piece &piece, int plus_x, int plus_y);
+bool MovableChessRule(Piece &piece, int plus_x, int plus_y);
+bool MovableBoardCheck(Piece chess_piece[2][16], Piece &piece, int plus_x, int plus_y);
 
 int main()
 {
@@ -308,16 +310,16 @@ int main()
         }
         cout << "옮기고 싶은 기물의 x,y좌표를 입력하시오 (x축은 오른쪽이 +, y축은 아래쪽이 +,좌표는 0부터 시작합니다, x,y에 -2를 입력하면 항복입니다.)\n";
         cin >> x >> y;
-        if(x==-2&&y==-2)
+        if (x == -2 && y == -2)
         {
-            if(turn==0)
+            if (turn == 0)
             {
-                cout<<"2번 플레이어가 승리하셨습니다.";
+                cout << "2번 플레이어가 승리하셨습니다.";
                 return 1;
             }
             else
             {
-                cout<<"1번 플레이어가 승리하셨습니다.";
+                cout << "1번 플레이어가 승리하셨습니다.";
                 return 1;
             }
         }
@@ -327,7 +329,7 @@ int main()
             cout << "빈칸입니다 다시입력하시오" << endl;
             cin >> x >> y;
         }
-        
+
         for (int i = 0; i < 2; i++)
         {
             for (int j = 0; j < 16; j++)
@@ -343,6 +345,26 @@ int main()
                         }
                         else
                         {
+                            int movable;
+                            cout << chess_piece[i][j].GetName() << "이 이동할 수 있는 좌표증가량을 알고싶다면 1을 입력하고, 필요하지 않다면 0을 입력하시오" << endl;
+                            cin >> movable;
+                            if (movable == 1)
+                            {
+                                for (int a = -7; a < 8; a++)
+                                {
+                                    for (int b = -7; b < 8; b++)
+                                    {
+                                        if (MovableChessRule(chess_piece[i][j], a, b))
+                                        {   if(MovableBoardCheck(chess_piece, chess_piece[i][j], a, b))
+                                            {
+                                                cout << "x:" << a << " y:" << b << endl;
+                                            }
+                                            
+                                        }
+                                    }
+                                }
+                            }
+
                             cout << chess_piece[i][j].GetName() << "입니다\n원하는 x좌표 증가량과 y좌표 증가량을 입력하시오(x,y축은 0부터 시작합니다. x축은 오른쪽이 +, y축은 아래쪽이 + ,만약 다른 말을 입력하고 싶다면 x,y에 -1을 입력하세요)" << endl;
                             cin >> moving_x >> moving_y;
 
@@ -387,6 +409,25 @@ int main()
                         }
                         else
                         {
+                            int movable;
+                            cout << chess_piece[i][j].GetName() << "이 이동할 수 있는 좌표증가량을 알고싶다면 1을 입력하고, 필요하지 않다면 0을 입력하시오" << endl;
+                            cin >> movable;
+                            if (movable == 1)
+                            {
+                                for (int a = -7; a < 8; a++)
+                                {
+                                    for (int b = -7; b < 8; b++)
+                                    {
+                                        if (MovableChessRule(chess_piece[i][j], a, b))
+                                        {   if(MovableBoardCheck(chess_piece, chess_piece[i][j], a, b))
+                                            {
+                                                cout << "x:" << a << " y:" << b << endl;
+                                            }
+                                            
+                                        }
+                                    }
+                                }
+                            }
                             cout << chess_piece[i][j].GetName() << "입니다\n원하는 x좌표 증가량과 y좌표 증가량을 입력하시오(x,y축은 0부터 시작합니다. x축은 오른쪽이 +, y축은 아래쪽이 + ,만약 다른 말을 입력하고 싶다면 x,y에 -1을 입력하세요)" << endl;
                             cin >> moving_x >> moving_y;
 
@@ -1073,4 +1114,433 @@ bool ChessRule(Piece &piece, int plus_x, int plus_y)
     }
 
     return true;
+}
+
+bool MovableChessRule(Piece &piece, int plus_x, int plus_y)
+{
+    int original_x = piece.GetX();
+    int original_y = piece.GetY();
+    int new_x = original_x + plus_x;
+    int new_y = original_y + plus_y;
+
+    string name = piece.GetName();
+    if (name.find("폰") != string::npos)
+    {
+        if (piece.GetTeamNum() == 0)
+        {
+            if (!(plus_x == 0 && (plus_y == 1 || (original_y == 1 && plus_y == 2))))
+            {
+                if (board[original_y + 1][original_x + 1] == 2 || board[original_y + 1][original_x - 1] == 2)
+                {
+                    if (plus_y == 1 && (plus_x == 1 || plus_x == -1))
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+
+                    return false;
+                }
+            }
+            else
+            {
+                for (int i = 1; i < plus_y; i++)
+                {
+                    if (board[original_y + i][original_x] != 0)
+                    {
+
+                        return false;
+                    }
+                }
+                if ((plus_y == 1 && board[original_y + 1][original_x] == 2) || (plus_y == 2 && board[original_y + 2][original_x] == 2))
+                {
+
+                    return false;
+                }
+            }
+        }
+        else
+        {
+            if (!(plus_x == 0 && (plus_y == -1 || (original_y == 6 && plus_y == -2))))
+            {
+                if (board[original_y - 1][original_x + 1] == 1 || board[original_y - 1][original_x - 1] == 1)
+                {
+                    if (plus_y == -1 && (plus_x == 1 || plus_x == -1))
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+
+                    return false;
+                }
+            }
+            else
+            {
+                for (int i = -1; i > plus_y; i--)
+                {
+                    if (board[original_y + i][original_x] != 0)
+                    {
+
+                        return false;
+                    }
+                }
+
+                if ((plus_y == -1 && board[original_y - 1][original_x] == 1) || (plus_y == -2 && board[original_y - 2][original_x] == 1))
+                {
+
+                    return false;
+                }
+            }
+        }
+    }
+    else if (name.find("룩") != string::npos)
+    {
+        if (!(plus_x == 0 || plus_y == 0))
+        {
+
+            return false;
+        }
+        else
+        {
+            if (plus_x == 0)
+            {
+                if (plus_y > 0)
+                {
+                    for (int i = 1; i < plus_y; i++)
+                    {
+                        if (board[original_y + i][original_x] != 0)
+                        {
+
+                            return false;
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = -1; i > plus_y; i--)
+                    {
+                        if (board[original_y + i][original_x] != 0)
+                        {
+
+                            return false;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (plus_x > 0)
+                {
+                    for (int i = 1; i < plus_x; i++)
+                    {
+                        if (board[original_y][original_x + i] != 0)
+                        {
+
+                            return false;
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = -1; i > plus_x; i--)
+                    {
+                        if (board[original_y][original_x + i] != 0)
+                        {
+
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else if (name.find("낫트") != string::npos)
+    {
+        if (!((abs(plus_x) == 2 && abs(plus_y) == 1) || (abs(plus_x) == 1 && abs(plus_y) == 2)))
+        {
+
+            return false;
+        }
+    }
+    else if (name.find("비숍") != string::npos)
+    {
+        if (abs(plus_x) != abs(plus_y))
+        {
+
+            return false;
+        }
+        else
+        {
+            if (plus_x > 0)
+            {
+                if (plus_y > 0)
+                {
+                    for (int i = 1; i < plus_y; i++)
+                    {
+                        for (int j = 1; j < plus_x; j++)
+                        {
+
+                            if (board[original_y + i][original_x + j] != 0)
+                            {
+
+                                return false;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i > plus_y; i--)
+                    {
+                        for (int j = 0; j < plus_x; j++)
+                        {
+
+                            if (board[original_y + i][original_x + j] != 0)
+                            {
+
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (plus_y > 0)
+                {
+                    for (int i = 0; i < plus_y; i++)
+                    {
+                        for (int j = 0; j > plus_x; j--)
+                        {
+
+                            if (board[original_y + i][original_x + j] != 0)
+                            {
+
+                                return false;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i > plus_y; i--)
+                    {
+                        for (int j = 0; j > plus_x; j--)
+                        {
+
+                            if (board[original_y + i][original_x + j] != 0)
+                            {
+
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else if (name.find("킹") != string::npos)
+    {
+        if (abs(plus_x) > 1 || abs(plus_y) > 1)
+        {
+
+            return false;
+        }
+    }
+    else if (name.find("퀸") != string::npos)
+    {
+        if (!(abs(plus_x) == abs(plus_y) || plus_x == 0 || plus_y == 0))
+        {
+
+            return false;
+        }
+        else if (abs(plus_x) == abs(plus_y))
+        {
+            if (plus_x > 0)
+            {
+                if (plus_y > 0)
+                {
+                    for (int i = 0; i < plus_y; i++)
+                    {
+                        for (int j = 0; j < plus_x; j++)
+                        {
+
+                            if (board[original_y + i][original_x + j] != 0)
+                            {
+
+                                return false;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i > plus_y; i--)
+                    {
+                        for (int j = 0; j < plus_x; j++)
+                        {
+
+                            if (board[original_y + i][original_x + j] != 0)
+                            {
+
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (plus_y > 0)
+                {
+                    for (int i = 0; i < plus_y; i++)
+                    {
+                        for (int j = 0; j > plus_x; j--)
+                        {
+
+                            if (board[original_y + i][original_x + j] != 0)
+                            {
+
+                                return false;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i > plus_y; i--)
+                    {
+                        for (int j = 0; j > plus_x; j--)
+                        {
+
+                            if (board[original_y + i][original_x + j] != 0)
+                            {
+
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else if (plus_x == 0 || plus_y == 0)
+        {
+            if (plus_x == 0)
+            {
+                if (plus_y > 0)
+                {
+                    for (int i = 0; i < plus_y; i++)
+                    {
+                        if (board[original_y + i][original_x] != 0)
+                        {
+
+                            return false;
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i > plus_y; i--)
+                    {
+                        if (board[original_y + i][original_x] != 0)
+                        {
+
+                            return false;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (plus_x > 0)
+                {
+                    for (int i = 0; i < plus_x; i++)
+                    {
+                        if (board[original_y][original_x + i] != 0)
+                        {
+
+                            return false;
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i > plus_x; i--)
+                    {
+                        if (board[original_y][original_x + i] != 0)
+                        {
+
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return true;
+}
+bool MovableBoardCheck(Piece chess_piece[2][16], Piece &piece, int plus_x, int plus_y)
+{
+    int original_x = piece.GetX();
+    int original_y = piece.GetY();
+    int new_x = original_x + plus_x;
+    int new_y = original_y + plus_y;
+    int x = new_x;
+    int y = new_y;
+
+    if (new_x < 0 || new_x > 7 || new_y < 0 || new_y > 7)
+    {
+        return false;
+    }
+
+    piece.SetX(new_x);
+    piece.SetY(new_y);
+
+    if (piece.GetTeamNum() == 0)
+    {
+        if (board[y][x] == 1)
+        {
+            piece.SetX(original_x);
+            piece.SetY(original_y);
+            return false;
+        }
+        else if (board[y][x] == 2)
+        {
+            piece.SetX(original_x);
+            piece.SetY(original_y);
+            return true;
+        }
+        else
+        {
+            piece.SetX(original_x);
+            piece.SetY(original_y);
+            return true; // 빈칸일 때
+        }
+    }
+    else
+    {
+        if (board[y][x] == 2)
+        {
+            
+            piece.SetX(original_x);
+            piece.SetY(original_y);
+            return false;
+        }
+        else if (board[y][x] == 1)
+        {
+            piece.SetX(original_x);
+            piece.SetY(original_y);
+            return true;
+        }
+        else
+        {
+            piece.SetX(original_x);
+            piece.SetY(original_y);;
+            return true; // 빈칸일 때
+        }
+    }
 }
