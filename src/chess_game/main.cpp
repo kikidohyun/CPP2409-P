@@ -373,7 +373,7 @@ int main()
                         }
                         else
                         {
-                            cout << chess_piece[i][j].GetName() << "입니다\n 원하는 x좌표 증가량과 y좌표 증가량을 입력하시오(x축은 오른쪽이 +, y축은 아래쪽이 +,좌표는 0부터 시작합니다)" << endl;
+                            cout << chess_piece[i][j].GetName() << "입니다\n원하는 x좌표 증가량과 y좌표 증가량을 입력하시오(x축은 오른쪽이 +, y축은 아래쪽이 +,좌표는 0부터 시작합니다)" << endl;
                             cin >> moving_x >> moving_y;
 
                             while (1)
@@ -702,8 +702,20 @@ bool ChessRule(Piece &piece, int plus_x, int plus_y)
         {
             if (!(plus_x == 0 && (plus_y == 1 || (original_y == 1 && plus_y == 2))))
             {
-                cout << "폰의 움직임이 바르지 않습니다.\n";
-                return false;
+                if(board[original_y+1][original_x+1]==2||board[original_y+1][original_x-1]==2)
+                {   
+                    if(plus_y==1&&(plus_x==1||plus_x==-1))
+                    {
+                        return true;
+                    }
+
+                }
+                else
+                {
+                    cout << "폰의 움직임이 바르지 않습니다.\n";
+                    return false;
+                }
+                
             }
             else
             {
@@ -721,8 +733,19 @@ bool ChessRule(Piece &piece, int plus_x, int plus_y)
         {
             if (!(plus_x == 0 && (plus_y == -1 || (original_y == 6 && plus_y == -2))))
             {
-                cout << "폰의 움직임이 바르지 않습니다.\n";
-                return false;
+                if(board[original_y-1][original_x+1]==1||board[original_y-1][original_x-1]==1)
+                {   
+                    if(plus_y==-1&&(plus_x==1||plus_x==-1))
+                    {
+                        return true;
+                    }
+
+                }
+                else
+                {
+                    cout << "폰의 움직임이 바르지 않습니다.\n";
+                    return false;
+                }
             }
             else
             {
