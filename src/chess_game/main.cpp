@@ -20,15 +20,24 @@ int main()
     int k = 1;
     int white_life;
     int black_life;
-
+    int choice;
+    
     Piece chess_piece[2][16];
     MakePiece(chess_piece);
     NamingPiece(chess_piece);
     BoardCopy(chess_piece);
-
-    int choice;
-    cout << "1.체스 게임\n2.체스 퀴즈 제작\n 입력하시오" << endl;
-    cin >> choice;
+  
+    do
+    {
+        cout << "1.체스 게임\n2.체스 퀴즈 제작\n 입력하시오" << endl;
+        cin >> choice;
+        if (choice!=1&&choice!=2)
+        {
+            cout << "잘못된 입력값입니다." << endl;
+            continue;
+        }
+        break;
+    } while (1);
 
     if (choice == 2)
     {
@@ -38,15 +47,19 @@ int main()
             for (int j = 0; j < 16; j++)
             {
                 chess_piece[i][j].SetModify(0);
+                chess_piece[i][j].SetX(-1);
+                chess_piece[i][j].SetY(-1);
+                chess_piece[i][j].SetLife(0);
             }
         }
-        for(int i=0;i<8;i++)
+        for (int i = 0; i < 8; i++)
         {
-            for(int j=0;j<8;j++)
+            for (int j = 0; j < 8; j++)
             {
-                board[i][j]==0;
+                board[i][j] = 0;
             }
         }
+
         PrintBoard(chess_piece);
         cout << "체스 퀴즈 제작을 시작합니다." << endl;
 
@@ -55,108 +68,223 @@ int main()
             int num;
             int x_dot, y_dot;
             int play_game = 0;
+            int delete_num;
             Piece *choice_piece;
-            cout << "놓고싶은 기물과 팀에 해당하는 번호를 입력하시오 (만들어진 체스판에서 체스를 실행하고 싶다면 0을 입력하시오)" << endl;
-            cout << "1.폰 1\n2.룩 1\n3.낫트 1\n4.비숍 1\n5.퀸 1\n6.킹 1\n7.폰 2\n8.룩 2\n9.나이트 2\n10.비숍 2\n11.퀸 2\n12.킹 2\n";
-            cin >> num;
-
-            while (1)
+            cout << "1. 기물 추가 or 게임 실행\n2. 기물 삭제\n";
+            cin >> delete_num;
+            if (delete_num == 1)
             {
-                if (num == 1)
+                cout << "놓고싶은 기물과 팀에 해당하는 번호를 입력하시오 (만들어진 체스판에서 체스를 실행하고 싶다면 0을 입력하시오)" << endl;
+                cout << "1.폰 1\n2.룩 1\n3.낫트 1\n4.비숍 1\n5.퀸 1\n6.킹 1\n7.폰 2\n8.룩 2\n9.나이트 2\n10.비숍 2\n11.퀸 2\n12.킹 2\n";
+                cin >> num;
+
+                while (1)
                 {
-                    choice_piece = &chess_piece[0][1];
-                    break;
-                }
-                else if (num == 2)
-                {
-                    choice_piece = &chess_piece[0][8];
-                    break;
-                }
-                else if (num == 3)
-                {
-                    choice_piece = &chess_piece[0][9];
-                    break;
-                }
-                else if (num == 4)
-                {
-                    choice_piece = &chess_piece[0][10];
-                    break;
-                }
-                else if (num == 5)
-                {
-                    choice_piece = &chess_piece[0][11];
-                    break;
-                }
-                else if (num == 6)
-                {
-                    choice_piece = &chess_piece[0][12];
-                    break;
-                }
-                else if (num == 7)
-                {
-                    choice_piece = &chess_piece[1][1];
-                    break;
-                }
-                else if (num == 8)
-                {
-                    choice_piece = &chess_piece[1][8];
-                    break;
-                }
-                else if (num == 9)
-                {
-                    choice_piece = &chess_piece[1][9];
-                    break;
-                }
-                else if (num == 10)
-                {
-                    choice_piece = &chess_piece[1][10];
-                    break;
-                }
-                else if (num == 11)
-                {
-                    choice_piece = &chess_piece[1][11];
-                    break;
-                }
-                else if (num == 12)
-                {
-                    choice_piece = &chess_piece[1][12];
-                    break;
-                }
-                else if (num == 0)
-                {
-                    for (int i = 0; i < 2; i++)
+                    if (num == 1)
                     {
-                        for (int j = 0; j < 16; j++)
-                        {   
-                            if (chess_piece[i][j].GetModify() == 0)
+                        for (int i = 0; i < 7; i++)
+                        {
+                            if (chess_piece[0][i].GetLife() == 0)
                             {
-                                chess_piece[i][j].SetLife(0);
-                                chess_piece[i][j].SetX(-1);
-                                chess_piece[i][j].SetY(-1);
+                                choice_piece = &chess_piece[0][i];
+                                break;
                             }
                         }
+                        break;
                     }
-                    play_game = 1;
+                    else if (num == 2)
+                    {
+                        if (chess_piece[0][8].GetLife() == 1)
+                        {
+                            choice_piece = &chess_piece[0][15];
+                        }
+                        else
+                        {
+                            choice_piece = &chess_piece[0][8];
+                        }
+
+                        break;
+                    }
+                    else if (num == 3)
+                    {
+                        if (chess_piece[0][9].GetLife() == 1)
+                        {
+                            choice_piece = &chess_piece[0][14];
+                        }
+                        else
+                        {
+                            choice_piece = &chess_piece[0][9];
+                        }
+
+                        break;
+                    }
+                    else if (num == 4)
+                    {
+                        if (chess_piece[0][10].GetLife() == 1)
+                        {
+                            choice_piece = &chess_piece[0][13];
+                        }
+                        else
+                        {
+                            choice_piece = &chess_piece[0][10];
+                        }
+
+                        break;
+                    }
+                    else if (num == 5)
+                    {
+                        choice_piece = &chess_piece[0][11];
+                        break;
+                    }
+                    else if (num == 6)
+                    {
+                        choice_piece = &chess_piece[0][12];
+                        break;
+                    }
+                    else if (num == 7)
+                    {
+                        for (int i = 0; i < 8; i++)
+                        {
+                            if (chess_piece[1][i].GetLife() == 0)
+                            {
+                                choice_piece = &chess_piece[1][i];
+                                break;
+                            }
+                            
+                        }
+                        break;
+                    }
+                    else if (num == 8)
+                    {
+                        if (chess_piece[1][8].GetLife() == 1)
+                        {
+                            choice_piece = &chess_piece[1][15];
+                        }
+                        else
+                        {
+                            choice_piece = &chess_piece[1][8];
+                        }
+
+                        break;
+                    }
+                    else if (num == 9)
+                    {
+                        if (chess_piece[1][9].GetLife() == 1)
+                        {
+                            choice_piece = &chess_piece[1][14];
+                        }
+                        else
+                        {
+                            choice_piece = &chess_piece[1][9];
+                        }
+
+                        break;
+                    }
+                    else if (num == 10)
+                    {
+                        if (chess_piece[1][10].GetLife() == 1)
+                        {
+                            choice_piece = &chess_piece[1][13];
+                        }
+                        else
+                        {
+                            choice_piece = &chess_piece[1][10];
+                        }
+
+                        break;
+                    }
+                    else if (num == 11)
+                    {
+                        choice_piece = &chess_piece[1][11];
+                        break;
+                    }
+                    else if (num == 12)
+                    {
+                        choice_piece = &chess_piece[1][12];
+                        break;
+                    }
+                    else if (num == 0)
+                    {
+                        play_game = 1;
+                        break;
+                    }
+                    else
+                    {
+                        cout << "잘못 입력하셨습니다.";
+                    }
+                }
+                if (play_game == 1)
+                {
+                    if (chess_piece[0][12].GetLife() == 0 || chess_piece[1][12].GetLife() == 0)
+                    {
+                        cout << "king 기물이 없기에 게임을 진행할 수 없습니다." << endl;
+                        continue;
+                    }
+                    BoardCopy(chess_piece);
                     break;
+                }
+
+                do
+                {
+                    cout << "기물을 놓고싶은 x좌표와 y좌표를 입력해 주세요(좌표는 0부터 시작합니다),(말을 잘못 고르셨다면 x,y값에 -1을 넣으세요)" << endl;
+                    cin >> x_dot >> y_dot;
+                    if (x_dot < 0 || x_dot > 8 || y_dot < 0 || y_dot > 8||(board[y_dot][x_dot]!=0))
+                    {
+                        cout << "잘못된 좌표값입니다." << endl;
+                        continue;
+                    }
+                    break;
+                } while (1);
+
+                if (x_dot == -1 && y_dot == -1)
+                {
+                    continue;
+                }
+                choice_piece->SetX(x_dot);
+                choice_piece->SetY(y_dot);
+                choice_piece->SetModify(1);
+                choice_piece->SetLife(1);
+                BoardCopy(chess_piece);
+                PrintBoard(chess_piece);
+            }
+            else
+            {
+                int delete_x, delete_y;
+                do
+                {
+                    cout << "삭제하고 싶은 기물의 좌표를 입력하시오(x축은 오른쪽이 +, y축은 아래쪽이 +,좌표는 0부터 시작합니다)" << endl;
+                    cin >> delete_x >> delete_y;
+                    if (delete_x < 0 || delete_x > 8 || delete_y < 0 || delete_y > 8)
+                    {
+                        cout << "잘못된 좌표값입니다." << endl;
+                        continue;
+                    }
+                    break;
+                } while (1);
+                if (board[delete_y][delete_x] == 0)
+                {
+                    cout << "해당 위치에는 말이 없습니다." << endl;
                 }
                 else
                 {
-                    cout << "잘못 입력하셨습니다.";
+                    for (int i = 0; i < 2; i++)
+                    {   
+                        for (int j = 0; j < 16; j++)
+                        {
+                            if (chess_piece[i][j].GetX() == delete_x && chess_piece[i][j].GetY() == delete_y)
+                            {
+                                chess_piece[i][j].SetX(-1);
+                                chess_piece[i][j].SetY(-1);
+                                chess_piece[i][j].SetModify(0);
+                                chess_piece[i][j].SetLife(0);
+                                BoardCopy(chess_piece);
+                                PrintBoard(chess_piece);
+                                break;
+                            }
+                        }
+                    }
                 }
             }
-            if (play_game == 1)
-            {
-                BoardCopy(chess_piece);
-                
-                break;
-            }
-
-            cout << "기물을 놓고싶은 x좌표와 y좌표를 입력해 주세요";
-            cin >> x_dot >> y_dot;
-            choice_piece->SetX(x_dot);
-            choice_piece->SetY(y_dot);
-            choice_piece->SetModify(1);
-            PrintBoard(chess_piece);
         }
     }
 
@@ -179,7 +307,7 @@ int main()
             cout << "2번째 플레이어의 차례입니다\n";
             turn = 1;
         }
-        cout << "옮기고 싶은 기물의 x,y좌표를 입력하시오 (x좌표 0부터 시작, y좌표 0부터 시작)";
+        cout << "옮기고 싶은 기물의 x,y좌표를 입력하시오 (x축은 오른쪽이 +, y축은 아래쪽이 +,좌표는 0부터 시작합니다)";
         cin >> x >> y;
         while (board[y][x] == 0 || (x < 0 || x > 7 || y < 0 || y > 7))
         {
@@ -202,9 +330,9 @@ int main()
                         }
                         else
                         {
-                            cout << chess_piece[i][j].GetName() << "입니다\n 원하는 x좌표 증가량과 y좌표 증가량을 입력하시오(x축은 오른쪽이 +, y축은 아래쪽이 + ,만약 다른 말을 입력하고 싶다면 x,y에 -1입력)" << endl;
+                            cout << chess_piece[i][j].GetName() << "입니다\n 원하는 x좌표 증가량과 y좌표 증가량을 입력하시오(x,y축은 0부터 시작합니다. x축은 오른쪽이 +, y축은 아래쪽이 + ,만약 다른 말을 입력하고 싶다면 x,y에 -1을 입력하세요)" << endl;
                             cin >> moving_x >> moving_y;
-                            if(moving_x==-1&&moving_y==-1)
+                            if (moving_x == -1 && moving_y == -1)
                             {
                                 k++;
                                 break;
@@ -245,7 +373,7 @@ int main()
                         }
                         else
                         {
-                            cout << chess_piece[i][j].GetName() << "입니다\n 원하는 x좌표 증가량과 y좌표 증가량을 입력하시오(x축은 오른쪽이 +, y축은 아래쪽이 +)" << endl;
+                            cout << chess_piece[i][j].GetName() << "입니다\n 원하는 x좌표 증가량과 y좌표 증가량을 입력하시오(x축은 오른쪽이 +, y축은 아래쪽이 +,좌표는 0부터 시작합니다)" << endl;
                             cin >> moving_x >> moving_y;
 
                             while (1)
