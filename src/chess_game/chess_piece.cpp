@@ -44,11 +44,3 @@ void Piece::PrintName()
 {
     cout << name;
 }
-int Piece::GetModify()
-{
-    return modify_num;
-}
-void Piece::SetModify(int modify_num)
-{
-    this->modify_num = modify_num;
-}

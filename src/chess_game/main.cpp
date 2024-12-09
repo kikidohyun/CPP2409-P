@@ -21,8 +21,6 @@ int main()
 {
 
     int k = 1;
-    int white_life;
-    int black_life;
     int choice;
 
     Piece chess_piece[2][16];
@@ -49,7 +47,6 @@ int main()
         {
             for (int j = 0; j < 16; j++)
             {
-                chess_piece[i][j].SetModify(0);
                 chess_piece[i][j].SetX(-1);
                 chess_piece[i][j].SetY(-1);
                 chess_piece[i][j].SetLife(0);
@@ -244,7 +241,6 @@ int main()
                 }
                 choice_piece->SetX(x_dot);
                 choice_piece->SetY(y_dot);
-                choice_piece->SetModify(1);
                 choice_piece->SetLife(1);
                 BoardCopy(chess_piece);
                 PrintBoard(chess_piece);
@@ -277,7 +273,6 @@ int main()
                             {
                                 chess_piece[i][j].SetX(-1);
                                 chess_piece[i][j].SetY(-1);
-                                chess_piece[i][j].SetModify(0);
                                 chess_piece[i][j].SetLife(0);
                                 BoardCopy(chess_piece);
                                 PrintBoard(chess_piece);
@@ -323,8 +318,6 @@ int main()
         int turn;
         int x, y;
         int moving_x, moving_y;
-        white_life = 0;
-        black_life = 0;
 
         PrintBoard(chess_piece);
         if ((k % 2) == 1)
@@ -386,7 +379,7 @@ int main()
                                         if (MovableChessRule(chess_piece[i][j], a, b))
                                         {   if(MovableBoardCheck(chess_piece, chess_piece[i][j], a, b))
                                             {
-                                                cout << "x:" << a << " y:" << b << endl;
+                                                cout << "x증가량:" << a << " y증가량:" << b << endl;
                                             }
                                             
                                         }
@@ -394,12 +387,12 @@ int main()
                                 }
                             }
 
-                            cout << chess_piece[i][j].GetName() << "입니다\n원하는 x좌표 증가량과 y좌표 증가량을 입력하시오(x,y축은 0부터 시작합니다. x축은 오른쪽이 +, y축은 아래쪽이 + ,만약 다른 말을 입력하고 싶다면 x,y에 -1을 입력하세요)" << endl;
+                            cout << chess_piece[i][j].GetName() << "입니다\n원하는 x좌표 증가량과 y좌표 증가량을 입력하시오(x,y축은 0부터 시작합니다. x축은 오른쪽이 +, y축은 아래쪽이 + ,만약 다른 말을 입력하고 싶다면 x,y에 -10을 입력하세요)" << endl;
                             cin >> moving_x >> moving_y;
 
                             while (1)
                             {
-                                if (moving_x == -1 && moving_y == -1)
+                                if (moving_x == -10 && moving_y == -10)
                                 {
                                     k++;
                                     break;
@@ -410,7 +403,7 @@ int main()
                                     while (!BoardCheck(chess_piece, chess_piece[i][j], moving_x, moving_y))
                                     {
                                         check = 0;
-                                        cout << "다시 입력하세요 (만약 다른 말을 입력하고 싶다면 x,y에 -1을 입력하세요)";
+                                        cout << "다시 입력하세요 (만약 다른 말을 입력하고 싶다면 x,y에 -10을 입력하세요)";
                                         cin >> moving_x >> moving_y;
                                         break;
                                     }
@@ -421,7 +414,7 @@ int main()
                                 }
                                 else
                                 {
-                                    cout << "다시 입력하세요 (만약 다른 말을 입력하고 싶다면 x,y에 -1을 입력하세요)";
+                                    cout << "다시 입력하세요 (만약 다른 말을 입력하고 싶다면 x,y에 -10을 입력하세요)";
                                     cin >> moving_x >> moving_y;
                                 }
                             }
@@ -457,12 +450,12 @@ int main()
                                     }
                                 }
                             }
-                            cout << chess_piece[i][j].GetName() << "입니다\n원하는 x좌표 증가량과 y좌표 증가량을 입력하시오(x,y축은 0부터 시작합니다. x축은 오른쪽이 +, y축은 아래쪽이 + ,만약 다른 말을 입력하고 싶다면 x,y에 -1을 입력하세요)" << endl;
+                            cout << chess_piece[i][j].GetName() << "입니다\n원하는 x좌표 증가량과 y좌표 증가량을 입력하시오(x,y축은 0부터 시작합니다. x축은 오른쪽이 +, y축은 아래쪽이 + ,만약 다른 말을 입력하고 싶다면 x,y에 -10을 입력하세요)" << endl;
                             cin >> moving_x >> moving_y;
 
                             while (1)
                             {
-                                if (moving_x == -1 && moving_y == -1)
+                                if (moving_x == -10 && moving_y == -10)
                                 {
                                     k++;
                                     break;
@@ -471,7 +464,7 @@ int main()
                                 {
                                     while (!BoardCheck(chess_piece, chess_piece[i][j], moving_x, moving_y))
                                     {
-                                        cout << "다시 입력하세요 (만약 다른 말을 입력하고 싶다면 x,y에 -1을 입력하세요)";
+                                        cout << "다시 입력하세요 (만약 다른 말을 입력하고 싶다면 x,y에 -10을 입력하세요)";
                                         cin >> moving_x >> moving_y;
                                         break;
                                     }
@@ -479,7 +472,7 @@ int main()
                                 }
                                 else
                                 {
-                                    cout << "다시 입력하세요 (만약 다른 말을 입력하고 싶다면 x,y에 -1을 입력하세요)";
+                                    cout << "다시 입력하세요 (만약 다른 말을 입력하고 싶다면 x,y에 -10을 입력하세요)";
                                     cin >> moving_x >> moving_y;
                                 }
                             }
@@ -491,22 +484,13 @@ int main()
             }
         }
 
-        if (chess_piece[0][12].GetLife() == 1)
-        {
-            white_life = 1;
-        }
 
-        if (chess_piece[1][12].GetLife() == 1)
-        {
-            black_life = 1;
-        }
-
-        if (white_life == 0)
+        if (chess_piece[0][12].GetLife() == 0)
         {
             cout << "2째 플레이어가 승리하셨습니다.";
             break;
         }
-        else if (black_life == 0)
+        else if (chess_piece[1][12].GetLife() == 0)
         {
             cout << "1번째 플레이어가 승리하셨습니다";
             break;
@@ -533,7 +517,7 @@ void PrintBoard(Piece chess_piece[2][16])
                 {
                     x = chess_piece[q][w].GetX();
                     y = chess_piece[q][w].GetY();
-                    if (x == j && y == i && chess_piece[q][w].GetModify() == 1)
+                    if (x == j && y == i && chess_piece[q][w].GetLife() == 1)
                     {
                         chess_piece[q][w].PrintName();
                         found = true;
