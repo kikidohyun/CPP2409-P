@@ -5,7 +5,7 @@ using namespace std;
 class Piece
 {
 private:
-    int x=-1, y=-1;
+    int x, y;
     int team_num;
     int life = 1;
     string name;

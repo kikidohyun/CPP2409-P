@@ -3,6 +3,7 @@
 using namespace std;
 #include "chess_piece.h"
 #include <cmath>
+#include <fstream>
 
 int board[8][8] = {0};
 
@@ -70,11 +71,11 @@ int main()
             int num;
             int x_dot, y_dot;
             int play_game = 0;
-            int delete_num;
+            int choice_num;
             Piece *choice_piece;
-            cout << "1. 기물 추가 or 게임 실행\n2. 기물 삭제\n";
-            cin >> delete_num;
-            if (delete_num == 1)
+            cout << "1. 기물 추가 or 게임 실행\n2. 기물 삭제\n3.게임 저장\n4.저장된 게임 보기\n";
+            cin >> choice_num;
+            if (choice_num == 1)
             {
                 cout << "놓고싶은 기물과 팀에 해당하는 번호를 입력하시오 (만들어진 체스판에서 체스를 실행하고 싶다면 0을 입력하시오)" << endl;
                 cout << "1.폰 1\n2.룩 1\n3.낫트 1\n4.비숍 1\n5.퀸 1\n6.킹 1\n7.폰 2\n8.룩 2\n9.나이트 2\n10.비숍 2\n11.퀸 2\n12.킹 2\n";
@@ -248,7 +249,7 @@ int main()
                 BoardCopy(chess_piece);
                 PrintBoard(chess_piece);
             }
-            else
+            else if(choice_num==2)
             {
                 int delete_x, delete_y;
                 do
@@ -286,9 +287,37 @@ int main()
                     }
                 }
             }
+            else if(choice_num==3)
+            {   string data_name;
+                cout<<"저장할 데이터의 이름을 입력하시오"<<endl;
+                cin >> data_name;
+                ofstream os{"chess_data.txt", ios::app};
+                if(!os)
+                {
+                    cerr<<"파일 오픈에 실패하셨습니다."<<endl;
+                    exit(1);
+                }
+                os<<"data:"<<data_name<<"\n";
+                for(int i=0;i<2;i++)
+                {
+                    for(int j=0;j<16;j++)
+                    {
+                        os << chess_piece[i][j].GetLife() << " " << chess_piece[i][j].GetX() << " " << chess_piece[i][j].GetY() << " "<<endl;
+                    }
+                }
+                os << "\n";
+                os.close();
+            }
+            else if(choice_num==4)
+            {
+                cout<<"아직 구현하지 않았습니다."<<endl;
+            }
+            else
+            {
+                cout<<"옯바르지 않은 값을 입력하셨습니다."<<endl;
+            }
         }
     }
-
     while (1)
     {
         int turn;
